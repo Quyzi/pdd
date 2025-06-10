@@ -6,6 +6,8 @@ use std::{
 };
 use tokio::sync::broadcast::{self, Receiver};
 
+pub mod arguments;
+
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Argument {
     InputFile(PathBuf),
@@ -15,14 +17,14 @@ pub enum Argument {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Arguments {
+pub struct Argies {
     pub input_file: Option<PathBuf>,
     pub output_files: Vec<PathBuf>,
     pub block_size: usize,
     pub block_count: usize,
 }
 
-impl Default for Arguments {
+impl Default for Argies {
     fn default() -> Self {
         Self {
             input_file: None,
@@ -34,8 +36,8 @@ impl Default for Arguments {
 }
 
 impl Argument {
-    pub fn parse() -> Result<Arguments> {
-        let mut args = Arguments::default();
+    pub fn parse() -> Result<Argies> {
+        let mut args = Argies::default();
         for arg in std::env::args() {
             let Some((lhs, rhs)) = arg.split_once("=") else {
                 continue;
